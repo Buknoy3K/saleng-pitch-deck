@@ -1,0 +1,487 @@
+// One builder per illustrated slide. Each returns { scene, camera, tick(t, since), onStep?(n) }.
+import { THREE, C, ground, mesh, box, cyl, ico, roof, person, fire, clock, glasses, makeScene, keyLight, sway, Stage3D } from './kit.js';
+
+const ease = (x) => 1 - Math.pow(1 - Math.min(Math.max(x, 0), 1), 3);
+const rand = (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();
+
+function room(scene, { floor = 0x24302a, back = C.pine, side = 0x163a29, w = 7, d = 7, h = 5 } = {}) {
+  scene.add(box(w, .3, d, floor, 0, -.3, 0));
+  scene.add(box(w, h, .3, back, 0, 0, -d / 2));
+  scene.add(box(.3, h, d, side, -w / 2, 0, 0));
+}
+
+const builders = {
+  // 0 · Title: a bonfire with people sitting around it
+  bonfire() {
+    const S = makeScene({ bg: C.night, cam: [10, 7, 10], look: [0, 1.1, 0], zoom: 4.6, hemi: .3 }); const { scene } = S;
+    keyLight(scene, 0x8fa6d8, .35, [-6, 10, 4], 10);
+    scene.add(ground(C.night));
+    scene.add(cyl(4.2, 4.4, .06, 14, 0x2a241c, 0, -.05, 0)); // clearing
+    for (let i = 0; i < 9; i++) { const a = (i / 9) * Math.PI * 2; scene.add(ico(.22, C.grey, Math.cos(a) * 1.15, .08, Math.sin(a) * 1.15, 0)); } // stone ring
+    const f = fire(1.1, 7); scene.add(f);
+    // pines around the back of the clearing
+    for (let i = 0; i < 14; i++) {
+      const a = Math.PI * .55 + (i / 13) * Math.PI * 1.4, r = 5 + rand() * 1.5, h = 1.8 + rand() * 1.6;
+      const tr = mesh(new THREE.ConeGeometry(.6 + rand() * .3, h, 5), [C.pine, 0x1f4a32][i % 2]); tr.position.set(Math.cos(a) * r, h / 2, Math.sin(a) * r); scene.add(tr);
+    }
+    // people on logs, facing the fire
+    const looks = [
+      { shirt: C.ember, bun: true }, { shirt: C.resin, skin: C.skin2 }, { shirt: C.fog },
+      { shirt: C.pine2, bun: true, skin: C.skin2 }, { shirt: 0x4a7fb5 }, { shirt: C.fog, skin: C.skin2 },
+    ];
+    const people = looks.map((o, i) => {
+      const a = (i / looks.length) * Math.PI * 2 + .5, r = 2.5, x = Math.cos(a) * r, z = Math.sin(a) * r;
+      const yaw = Math.atan2(-x, -z);
+      const log = mesh(new THREE.CylinderGeometry(.22, .22, 1.1, 7), i % 2 ? C.wood : C.dark); log.rotation.z = Math.PI / 2;
+      const lg = new THREE.Group(); lg.position.set(x, .22, z); lg.rotation.y = yaw; lg.add(log); scene.add(lg);
+      const p = person({ ...o, seated: true }); p.position.set(x, .4, z); p.rotation.y = yaw; scene.add(p);
+      // thighs + shins so they read as sitting
+      [-.14, .14].forEach((dx) => { p.add(box(.22, .2, .6, C.night, dx, 0, .3)); p.add(box(.2, .5, .2, C.night, dx, -.45, .55)); });
+      p.userData.armR.rotation.set(-.9, 0, .1); p.userData.armL.rotation.set(-.9, 0, -.1); // hands out to the fire
+      return p;
+    });
+    return { ...S, tick(t) {
+      f.userData.tick(t);
+      people.forEach((p, i) => {
+        const k = t / 1400 + i * 1.7;
+        p.userData.head.rotation.x = Math.sin(k) * .08; p.userData.head.rotation.z = Math.sin(k * .6) * .1;
+        p.userData.armR.rotation.x = -.9 + Math.sin(k * 1.3) * .08; p.userData.armL.rotation.x = -.9 + Math.cos(k * 1.1) * .08;
+      });
+      sway(S.camera, t, .5, 4000);
+    } };
+  },
+
+  // 1 · Seoul: owner at home, orders arriving on her phone
+  seoul() {
+    const S = makeScene({ cam: [10, 9, 10], look: [0, 1.6, 0], zoom: 5.2 }); const { scene } = S;
+    keyLight(scene, 0xaec4ff, .9, [-4, 8, 6]);
+    room(scene);
+    scene.add(box(3, 2.2, .1, 0x0b0f0c, .4, 2.1, -3.3));
+    for (let i = 0; i < 7; i++) { const h = .4 + rand() * 1.2; scene.add(box(.3, h, .05, 0x2a5a40, -.8 + i * .4, 2.1, -3.22)); if (rand() > .4) scene.add(box(.08, .08, .02, C.resin, -.8 + i * .4, 2.1 + h * .6, -3.18, .9)); }
+    scene.add(box(3.2, .12, .4, C.fog, .4, 2, -3.2));
+    scene.add(box(3.6, .7, 1.4, C.ember, 0, 0, -1.6)); scene.add(box(3.6, 1.1, .4, 0xa51c28, 0, .5, -2.4));
+    scene.add(box(.4, 1, 1.4, 0xa51c28, -1.8, 0, -1.6)); scene.add(box(.4, 1, 1.4, 0xa51c28, 1.8, 0, -1.6));
+    const p = person({ shirt: C.fog, bun: true, seated: true }); p.position.set(.3, .7, -1.6); scene.add(p);
+    p.userData.armR.rotation.set(-1.3, 0, -.5);
+    const phone = box(.32, .56, .05, C.night, .62, 1.62, -1.05); phone.rotation.x = -.5; scene.add(phone);
+    const screen = box(.26, .48, .02, C.resin, .62, 1.63, -1.02, 1.2); screen.rotation.x = -.5; scene.add(screen);
+    scene.add(box(.08, 2.6, .08, C.night, 2.6, 0, -2.6));
+    const shade = mesh(new THREE.CylinderGeometry(.25, .5, .5, 6, 1, true), C.resin, .6); shade.position.set(2.6, 2.75, -2.6); scene.add(shade);
+    const warm = new THREE.PointLight(0xffb347, 18, 9, 1.6); warm.position.set(2.4, 2.4, -2.2); warm.castShadow = true; scene.add(warm);
+    scene.add(box(1.6, .5, .9, 0x6b4a2b, -1, 0, .4)); scene.add(box(.22, .26, .22, C.white, -1.3, .5, .4));
+    const cards = [];
+    for (let i = 0; i < 4; i++) {
+      const g = new THREE.Group();
+      g.add(box(1.3, .4, .05, C.white, 0, -.2, 0, .25));
+      g.add(box(.18, .18, .06, [C.ember, C.resin, C.pine2, C.ember][i], -.45, -.09, .02, .5));
+      g.add(box(.7, .07, .06, 0x9aa094, .12, .02, .02)); g.add(box(.5, .07, .06, 0xc8ccc2, .02, -.12, .02));
+      g.rotation.y = Math.PI / 4; scene.add(g); cards.push(g);
+    }
+    return { ...S, tick(t) {
+      cards.forEach((g, i) => { const k = ((t / 6000) + i / 4) % 1; g.position.set(.4 - k * 2, 2.1 + k * 2.6, -.9 + k * 2); const s = Math.min(1, k * 8) * (k > .85 ? (1 - k) / .15 : 1); g.scale.setScalar(Math.max(s, .001)); });
+      screen.material.emissiveIntensity = 1 + Math.sin(t / 200) * .4;
+      sway(S.camera, t);
+    } };
+  },
+
+  // 2 · La Trinidad: sari-sari store at night, owner adding up sales by hand
+  trinidad: shop,
+  // 4 · Who we work for: a spark hops from shop to shop across La Trinidad and Baguio
+  who: spread,
+};
+
+function shop() {
+  {
+    const S = makeScene({ cam: [10, 9, 10], look: [0, 1.6, 0], zoom: 5.2, hemi: .55 }); const { scene } = S;
+    keyLight(scene, 0x8fa6d8, .45, [-4, 8, 6]);
+    room(scene, { back: 0x3a3226, side: 0x2c261d, floor: 0x2a241c });
+    // window with mountains + moon
+    scene.add(box(2.4, 1.8, .1, 0x0b1020, -1.6, 2.3, -3.3));
+    [[-2.4, .9], [-1.8, 1.3], [-1.1, .8], [-.7, 1.1]].forEach(([x, h]) => { const m = mesh(new THREE.ConeGeometry(.5, h, 4), 0x1c3326); m.position.set(x, 2.3 + h / 2, -3.22); scene.add(m); });
+    scene.add(ico(.16, C.fog, -2.2, 3.7, -3.2, 1, .8));
+    // shelves of goods
+    for (let r = 0; r < 3; r++) {
+      scene.add(box(3, .08, .5, C.wood, 1.6, 1.4 + r * .8, -3.1));
+      for (let i = 0; i < 7; i++) { const c = [C.ember, C.resin, C.pine2, C.fog, 0x4a7fb5][(i + r) % 5]; scene.add(box(.28, .3 + rand() * .25, .3, c, .4 + i * .4, 1.48 + r * .8, -3.05)); }
+    }
+    // clock at 9:14
+    const hour = 9 + 14 / 60;
+    const ck = clock(.45); ck.position.set(-2.8, 3.6, -3.32); scene.add(ck); ck.userData.set(hour);
+    // owner + counter
+    const p = person({ shirt: C.ember, hair: C.night, skin: C.skin2 }); p.position.set(.3, 0, -1.2); p.rotation.y = .2; scene.add(p);
+    p.userData.head.rotation.x = .4;
+    p.userData.armR.rotation.set(-1.0, 0, .1); p.userData.armL.rotation.set(-1.1, 0, -.1);
+    scene.add(box(4.6, 1.15, 1, C.wood, .4, 0, -.1)); scene.add(box(4.7, .08, 1.1, 0x5c3a1a, .4, 1.15, -.1));
+    const book = box(.9, .05, .6, C.white, .2, 1.23, -.25); book.rotation.y = -.15; scene.add(book);
+    const calc = box(.3, .07, .42, C.night, 1, 1.23, -.2); scene.add(calc); scene.add(box(.22, .02, .1, 0x9fd9a8, 1, 1.3, -.32, .6));
+    for (let i = 0; i < 5; i++) scene.add(cyl(.08, .08, .03, 8, C.resin, -.6 + (i % 3) * .05, 1.23 + i * .03, .05));
+    // strawberry crate (La Trinidad)
+    scene.add(box(1, .35, .7, 0xb07a3c, -1.4, 1.23, -.1));
+    for (let i = 0; i < 10; i++) scene.add(ico(.09, C.ember, -1.8 + (i % 5) * .2, 1.62, -.3 + Math.floor(i / 5) * .3, 0));
+    // swinging bulb
+    const pend = new THREE.Group(); pend.position.set(.4, 5, -.6); scene.add(pend);
+    const cord = box(.02, 1.4, .02, C.night, 0, -1.4, 0); pend.add(cord);
+    const bulb = ico(.14, 0xffe6a8, 0, -1.5, 0, 1, 1.4); pend.add(bulb);
+    const L = new THREE.PointLight(0xffc56b, 14, 8, 1.5); L.position.set(0, -1.6, 0); L.castShadow = true; pend.add(L);
+    return { ...S, tick(t) {
+      pend.rotation.z = Math.sin(t / 900) * .12;
+      L.intensity = 13 + Math.sin(t / 60) * .6 + (Math.random() > .985 ? -6 : 0);
+      p.userData.armR.rotation.x = -1.0 + Math.sin(t / 140) * .08;
+      ck.userData.set(hour + (t / 1000) / 3600);
+      sway(S.camera, t, .4);
+    } };
+  }
+}
+
+// 4 · A spark hops from shop to shop across La Trinidad (valley) and Baguio (pine ridge)
+function spread() {
+  const S = makeScene({ bg: C.night, cam: [11, 11, 12], look: [.4, .2, -1.2], zoom: 6.6, hemi: .8 }); const { scene } = S;
+  keyLight(scene, 0xbfd0ff, .7, [-6, 12, 8], 14);
+  scene.add(ground(C.night));
+  scene.add(box(18, .3, 14, 0x24402e, 0, -.3, 0)); // valley floor
+  // Baguio ridge (back right): a lower ledge (top y 1.1) and an upper tier (top y 1.7).
+  // Lower: x 1.9..8.5, z -6.6..-1.0   Upper: x 2.7..8.1, z -6.2..-1.6
+  scene.add(box(6.6, 1.4, 5.6, 0x2b4a34, 5.2, -.3, -3.8)); scene.add(box(5.4, .6, 4.6, 0x30533a, 5.4, 1.1, -3.9));
+  // hills well behind the ridge
+  for (let i = 0; i < 9; i++) { const h = 2 + rand() * 1.8; const m = mesh(new THREE.ConeGeometry(1.3 + rand(), h, 5), [C.pine, 0x24553a][i % 2]); m.position.set(-8 + i * 2, h / 2, -9 - rand()); scene.add(m); }
+  // strawberry fields in the valley (La Trinidad)
+  for (let r = 0; r < 4; r++) { scene.add(box(3.2, .12, .5, 0x3f7d4f, -5, 0, 1.8 + r * .8)); for (let i = 0; i < 8; i++) scene.add(ico(.08, C.ember, -6.4 + i * .4, .2, 1.8 + r * .8, 0)); }
+  // the road: along the valley, up a ramp, then along the ridge ledge to Baguio (z = -1.3)
+  const RZ = -1.3, ROAD = 0x2a2e2b;
+  scene.add(box(6.2, .04, .5, ROAD, -2.2, 0, RZ));                         // valley street x -5.3..0.9
+  const ramp = mesh(new THREE.BoxGeometry(Math.hypot(1, 1.1), .04, .5), ROAD); ramp.position.set(1.4, .57, RZ); ramp.rotation.z = Math.atan2(1.1, 1); scene.add(ramp);
+  scene.add(box(6.6, .04, .5, ROAD, 5.2, 1.1, RZ));                        // ridge street x 1.9..8.5
+  for (let x = -5; x < .8; x += .7) scene.add(box(.3, .02, .05, C.fog, x, .04, RZ));
+  for (let x = 2.1; x < 8.4; x += .7) scene.add(box(.3, .02, .05, C.fog, x, 1.14, RZ));
+  // shops: La Trinidad on both sides of the valley street, Baguio on the upper tier beside the ridge street
+  const spots = [[-4.4, 0, -2.4], [-3.0, 0, -2.4], [-1.6, 0, -2.4], [-3.8, 0, -.2], [-2.4, 0, -.2], [-1.0, 0, -.2], [-1.8, 0, 1.1],
+    [3.4, 1.7, -2.3], [4.8, 1.7, -2.3], [6.2, 1.7, -2.3], [4.2, 1.7, -4.4], [5.8, 1.7, -4.2]];
+  // pines on the ridge, kept clear of the shops and the road
+  for (let i = 0; i < 60; i++) {
+    const x = 2 + rand() * 6.4, z = -6.5 + rand() * 4.6;
+    if (z > RZ - .5 || spots.some(([sx, , sz]) => Math.hypot(sx - x, sz - z) < .9)) continue;
+    const upper = x > 2.9 && x < 7.9 && z > -6 && z < -1.8;
+    const lower = x > 2.1 && x < 8.3 && z > -6.4 && z < -1.2;
+    if (!lower) continue;
+    if (!upper && x > 2.6 && x < 8.2 && z > -6.3 && z < -1.5) continue; // straddling the tier edge
+    const tr = mesh(new THREE.ConeGeometry(.28, 1 + rand() * .6, 5), 0x1f4a32); tr.position.set(x, (upper ? 1.7 : 1.1) + .5, z); scene.add(tr);
+  }
+  const cols = [C.resin, C.fog, C.ember, C.pine2, C.fog, C.resin, C.ember, C.fog, C.resin, C.ember, C.pine2, C.fog];
+  const shops = spots.map(([x, y, z], i) => {
+    const g = new THREE.Group(); g.position.set(x, y, z); g.rotation.y = (rand() - .5) * .2;
+    g.add(box(.9, .7, .8, cols[i], 0, 0, 0)); g.add(roof(1.05, .45, .95, 0x3a2d22, 0, .7, 0));
+    const win = box(.4, .28, .02, 0x3b3a30, 0, .18, .41); g.add(win);
+    const screen = new THREE.Group(); screen.position.y = 1.55; g.add(screen);
+    screen.add(box(.62, .42, .05, C.white, 0, -.21, 0, .3)); screen.add(box(.14, .14, .06, [C.pine2, C.resin, C.ember][i % 3], -.17, -.12, .02, .6));
+    screen.add(box(.26, .05, .06, 0x9aa094, .1, -.08, .02)); screen.add(box(.2, .05, .06, 0xc8ccc2, .07, -.18, .02));
+    screen.scale.setScalar(.001);
+    scene.add(g);
+    return { g, win, screen, pos: new THREE.Vector3(x, y + 1.1, z) };
+  });
+  // the spark and its trail
+  const spark = ico(.13, 0xffd27a, 0, 0, 0, 1, 1.5); scene.add(spark);
+  const glow = new THREE.PointLight(0xffb347, 10, 4, 1.6); spark.add(glow);
+  const trail = [];
+  for (let i = 0; i < 10; i++) { const e = new THREE.Mesh(new THREE.BoxGeometry(.06, .06, .06), new THREE.MeshBasicMaterial({ color: C.resin })); scene.add(e); trail.push(e); }
+  const hop = 650, hold = 2600, cycle = shops.length * hop + hold;
+  const from = new THREE.Vector3(-7, 3, 4);
+  const hist = [];
+  return { ...S, tick(t, since) {
+    const k = since % cycle; const n = Math.floor(k / hop);
+    shops.forEach((s, i) => {
+      const lit = k < cycle - 700 && (i < n || (i === n && (k % hop) > hop * .9));
+      s.win.material.color.setHex(lit ? 0xffd27a : 0x3b3a30); s.win.material.emissive.setHex(lit ? 0xffd27a : 0); s.win.material.emissiveIntensity = lit ? 1 : 0;
+      const target = lit ? 1 : .001; s.screen.scale.setScalar(s.screen.scale.x + (target - s.screen.scale.x) * .15);
+      s.screen.position.y = 1.55 + Math.sin(t / 500 + i) * .06; s.screen.rotation.y = Math.PI / 4 - s.g.rotation.y;
+    });
+    if (n < shops.length) {
+      const a = n === 0 ? from : shops[n - 1].pos, b = shops[n].pos, u = ease((k % hop) / hop);
+      spark.position.lerpVectors(a, b, u); spark.position.y += Math.sin(u * Math.PI) * 1.2; spark.visible = true;
+    } else spark.visible = false;
+    hist.unshift(spark.position.clone()); hist.length = 30;
+    trail.forEach((e, i) => { const q = hist[i * 3]; e.visible = spark.visible && !!q; if (q) { e.position.copy(q); e.scale.setScalar(1 - i / trail.length); } });
+    glow.intensity = 8 + Math.random() * 4;
+    sway(S.camera, t, .5, 4000);
+  } };
+}
+
+const builders2 = {
+
+  // 5 · Ate Analyn: laundry + tailoring, slips everywhere
+  analyn() {
+    const S = makeScene({ bg: 0x10251b, cam: [10, 8, 10], look: [0, 1.4, 0], zoom: 4.8 }); const { scene } = S;
+    keyLight(scene, 0xfff1d6, 1.1, [5, 10, 6]);
+    room(scene, { floor: 0xd8d6cc, back: C.fog, side: 0xcfd3cb });
+    scene.add(box(4, .6, .1, C.pine, .5, 3.9, -3.3));
+    const drums = [];
+    [-2.3, -.9].forEach((x) => {
+      scene.add(box(1.2, 1.5, 1.1, C.white, x, 0, -2.7)); scene.add(box(1.2, .25, 1.1, 0xcfd3cb, x, 1.5, -2.7));
+      const door = mesh(new THREE.CylinderGeometry(.42, .42, .08, 10), C.pine); door.rotation.x = Math.PI / 2; door.position.set(x, .75, -2.12); scene.add(door);
+      const d = mesh(new THREE.CylinderGeometry(.32, .32, .1, 5), C.resin); d.rotation.x = Math.PI / 2; d.position.set(x, .75, -2.08); scene.add(d); drums.push(d);
+    });
+    scene.add(box(1.6, .8, .9, C.wood, -2.6, 0, .2));
+    const sm = new THREE.Group(); sm.add(box(.9, .2, .4, C.ember, 0, 0, 0)); sm.add(box(.2, .5, .35, C.ember, -.35, .2, 0)); sm.add(box(.8, .2, .35, C.ember, 0, .6, 0));
+    sm.position.set(-2.6, .8, .2); sm.rotation.y = .4; scene.add(sm);
+    const p = person({ shirt: C.resin, bun: true }); p.position.set(1.2, 0, -1.3); p.rotation.y = .3; scene.add(p);
+    p.userData.armR.rotation.x = -.6;
+    scene.add(box(4, 1.1, .9, C.night, 1, 0, -.2)); scene.add(box(4.1, .08, 1, 0x2a2f2b, 1, 1.1, -.2));
+    const book = box(.9, .06, .6, C.white, .6, 1.18, -.2); book.rotation.y = .2; scene.add(book);
+    const slips = [];
+    for (let i = 0; i < 14; i++) {
+      const s = mesh(new THREE.PlaneGeometry(.38, .24), i % 3 ? C.white : C.resin); s.material.side = THREE.DoubleSide;
+      s.userData = { x: -2.5 + rand() * 5, z: -2 + rand() * 3.5, o: rand(), sp: .7 + rand() * .6 };
+      scene.add(s); slips.push(s);
+    }
+    return { ...S, tick(t) {
+      drums.forEach((d, i) => d.rotation.y = t / (300 + i * 200));
+      slips.forEach((s) => { const u = s.userData; const k = ((t / 7000) * u.sp + u.o) % 1; s.position.set(u.x + Math.sin(k * 9 + u.o * 6) * .5, 5.2 - k * 5.4, u.z); s.rotation.set(k * 12, k * 7, k * 4); });
+      p.userData.head.rotation.y = Math.sin(t / 700) * .5;
+      sway(S.camera, t);
+    } };
+  },
+
+  // 7 · Ate Rena: the office by day, the snack stop, the night trip between them
+  rena() {
+    const S = makeScene({ bg: 0x0f1a24, cam: [10, 10, 12], look: [0, .6, 0], zoom: 5, hemi: .6 }); const { scene } = S;
+    keyLight(scene, 0x9fb8ff, .6, [-5, 10, 6], 12);
+    scene.add(box(16, .3, 9, 0x1d2a22, 0, -.3, 0));
+    scene.add(ico(.4, C.fog, -4, 6, -4, 1, .9));
+    // office (EO Optical)
+    scene.add(box(4, .2, 3.6, 0x34413a, -3.4, 0, -.6));
+    scene.add(box(4, 3, .2, 0xdfe3da, -3.4, .2, -2.3));
+    scene.add(box(.2, 3, 3.6, 0xcfd3cb, -5.3, .2, -.6));
+    scene.add(box(3.4, .12, .6, C.wood, -3.4, 1.5, -2.05));
+    for (let i = 0; i < 6; i++) { const gl = glasses(i % 2 ? C.night : C.ember); gl.position.set(-4.8 + i * .55, 1.74, -2); scene.add(gl); }
+    scene.add(box(1.6, .8, .8, C.wood, -3.2, .2, -.6)); scene.add(box(.7, .5, .06, C.night, -3.2, 1, -.8)); scene.add(box(.6, .4, .02, 0x9fd9a8, -3.2, 1.05, -.76, .7));
+    scene.add(box(.2, .2, .2, C.night, -3.2, 1, -.8));
+    // snack stop
+    const stall = new THREE.Group(); stall.position.set(3.8, 0, -.4); scene.add(stall);
+    stall.add(box(2.6, 1.1, 1.3, C.pine2, 0, 0, 0)); stall.add(box(2.7, .08, 1.4, C.fog, 0, 1.1, 0));
+    for (let i = 0; i < 6; i++) stall.add(box(.45, .14, 1.6, i % 2 ? C.ember : C.white, -1.12 + i * .45, 2.4, .1));
+    stall.add(box(.08, 1.3, .08, C.night, -1.25, 1.1, .6)); stall.add(box(.08, 1.3, .08, C.night, 1.25, 1.1, .6));
+    for (let i = 0; i < 4; i++) stall.add(cyl(.13, .13, .32, 8, [C.resin, C.ember, C.fog, C.resin][i], -.8 + i * .5, 1.18, 0));
+    const bulb = ico(.1, 0xffe6a8, 0, 2.2, .3, 1, 1.2); stall.add(bulb);
+    const sl = new THREE.PointLight(0xffc56b, 0, 6, 1.5); sl.position.set(0, 2, .6); stall.add(sl);
+    // path + walker
+    const pts = [new THREE.Vector3(-1.3, 0, .6), new THREE.Vector3(0, 0, 2.4), new THREE.Vector3(1.6, 0, 2.2), new THREE.Vector3(2.6, 0, 1.2)];
+    const curve = new THREE.CatmullRomCurve3(pts);
+    for (let i = 0; i <= 18; i++) { const q = curve.getPoint(i / 18); scene.add(box(.18, .03, .18, 0x5a6b5f, q.x, 0, q.z)); }
+    const w = person({ shirt: C.resin, bun: true }); w.scale.setScalar(.75); scene.add(w);
+    return { ...S, tick(t) {
+      const k = (t / 9000) % 1; const u = k < .5 ? ease(k * 2) : 1 - ease((k - .5) * 2);
+      const q = curve.getPoint(u), q2 = curve.getPoint(Math.min(Math.max(u + (k < .5 ? .02 : -.02), 0), 1));
+      w.position.set(q.x, Math.abs(Math.sin(t / 160)) * .06, q.z);
+      w.rotation.y = Math.atan2(q2.x - q.x, q2.z - q.z);
+      w.userData.armR.rotation.x = Math.sin(t / 160) * .5; w.userData.armL.rotation.x = -Math.sin(t / 160) * .5;
+      sl.intensity = 9 + Math.sin(t / 70) * .5;
+      sway(S.camera, t, .5);
+    } };
+  },
+
+  // 9 · CCDC: drafting documents by hand, papers piling up
+  ccdc() {
+    const S = makeScene({ bg: 0x182019, cam: [10, 9, 10], look: [0, 1.4, 0], zoom: 4.6 }); const { scene } = S;
+    keyLight(scene, 0xfff1d6, 1.1, [5, 10, 6]);
+    room(scene, { floor: 0xb9b3a4, back: 0xe8e4d8, side: 0xd6d1c3 });
+    const ck = clock(.5); ck.position.set(1.2, 3.6, -3.32); scene.add(ck);
+    scene.add(box(4, .12, 1.8, C.wood, 0, 1.1, -1.4)); [[-1.8, -2.1], [1.8, -2.1], [-1.8, -.7], [1.8, -.7]].forEach(([x, z]) => scene.add(box(.1, 1.1, .1, C.dark, x, 0, z)));
+    scene.add(box(1.4, .9, .08, C.night, -.3, 1.6, -2.1)); scene.add(box(1.25, .75, .02, 0xdfe7f0, -.3, 1.68, -2.05, .4));
+    for (let i = 0; i < 5; i++) scene.add(box(.9, .04, .02, 0x9aa4b0, -.3, 2.25 - i * .12, -2.03));
+    scene.add(box(.2, .4, .2, C.night, -.3, 1.22, -2.1));
+    scene.add(box(1, .05, .35, 0x2a2f2b, -.3, 1.22, -1.2));
+    const p = person({ shirt: 0x4a7fb5, hair: C.night, seated: true }); p.position.set(-.3, .55, -.3); p.rotation.y = Math.PI; scene.add(p);
+    scene.add(box(.8, .55, .8, C.night, -.3, 0, -.3));
+    p.userData.armR.rotation.x = -1.2; p.userData.armL.rotation.x = -1.2;
+    // growing paper stack
+    const sheets = [];
+    for (let i = 0; i < 26; i++) { const s = box(.6, .025, .8, i % 7 === 6 ? C.resin : C.white, 1.3 + (rand() - .5) * .06, 1.22 + i * .028, -1.5 + (rand() - .5) * .06); s.rotation.y = (rand() - .5) * .2; s.visible = false; scene.add(s); sheets.push(s); }
+    scene.add(box(1.4, 1.6, .7, 0x8f8a7c, 2.6, 0, -2.9));
+    return { ...S, tick(t) {
+      const k = (t / 9000) % 1; const n = Math.floor(k * sheets.length * 1.15);
+      sheets.forEach((s, i) => s.visible = i < n);
+      ck.userData.set((t / 1000) * .35);
+      p.userData.armR.rotation.x = -1.2 + Math.sin(t / 60) * .06; p.userData.armL.rotation.x = -1.2 + Math.cos(t / 55) * .06;
+      sway(S.camera, t);
+    } };
+  },
+
+  // 10 · The turn: three businesses, same problem (clocks running)
+  turn() {
+    const S = makeScene({ cam: [0, 8, 14], look: [0, .9, 0], zoom: 2.8 }); const { scene } = S;
+    keyLight(scene, 0xfff1d6, 1.1, [4, 10, 8], 12);
+    const clocks = []; const spin = [];
+    const plinth = (x, c) => { scene.add(box(3.2, .5, 3.2, c, x, -.5, 0)); };
+    // laundry
+    plinth(-4.4, C.ember);
+    scene.add(box(1.2, 1.5, 1.1, C.white, -4.4, 0, -.2));
+    const d1 = mesh(new THREE.CylinderGeometry(.42, .42, .08, 10), C.pine); d1.rotation.x = Math.PI / 2; d1.position.set(-4.4, .75, .38); scene.add(d1);
+    const dr = mesh(new THREE.CylinderGeometry(.32, .32, .1, 5), C.resin); dr.rotation.x = Math.PI / 2; dr.position.set(-4.4, .75, .42); scene.add(dr); spin.push(dr);
+    // snack stop
+    plinth(0, C.resin);
+    scene.add(box(2, 1, 1, C.pine2, 0, 0, 0));
+    for (let i = 0; i < 5; i++) scene.add(box(.42, .12, 1.3, i % 2 ? C.ember : C.white, -.84 + i * .42, 2, .1));
+    scene.add(box(.06, 1, .06, C.night, -.95, 1, .5)); scene.add(box(.06, 1, .06, C.night, .95, 1, .5));
+    for (let i = 0; i < 3; i++) scene.add(cyl(.12, .12, .3, 8, [C.resin, C.ember, C.fog][i], -.5 + i * .5, 1, 0));
+    // office
+    plinth(4.4, C.pine);
+    scene.add(box(2, .1, 1, C.wood, 4.4, .8, 0)); scene.add(box(.08, .8, .08, C.dark, 3.5, 0, -.4)); scene.add(box(.08, .8, .08, C.dark, 5.3, 0, -.4));
+    scene.add(box(1, .65, .06, C.night, 4.2, .9, -.3)); scene.add(box(.9, .55, .02, 0xdfe7f0, 4.2, .95, -.26, .4));
+    for (let i = 0; i < 8; i++) scene.add(box(.45, .025, .6, C.white, 5, .9 + i * .03, .1));
+    [-4.4, 0, 4.4].forEach((x) => { const c = clock(.42); c.position.set(x, 3.4, 0); scene.add(c); clocks.push(c); });
+    return { ...S, tick(t) {
+      clocks.forEach((c, i) => c.userData.set(t / 1000 * (.5 + i * .07)));
+      spin.forEach((d) => d.rotation.y = t / 300);
+    } };
+  },
+
+  // 11 · 9 in 10: nine small shops and one big building
+  micro() {
+    const S = makeScene({ cam: [9, 9, 13], look: [0, .8, 0], zoom: 4.2 }); const { scene } = S;
+    keyLight(scene, 0xfff1d6, 1.15, [5, 12, 7], 12);
+    scene.add(box(40, .2, 30, 0x1d241f, 0, -.2, -6));
+    const items = [];
+    const cols = [C.resin, C.ember, C.pine2, C.fog, C.resin, C.ember, C.pine2, C.fog, C.resin];
+    for (let i = 0; i < 10; i++) {
+      const g = new THREE.Group(); const x = (i % 5 - 2) * 2.1, z = Math.floor(i / 5) * 2.4 - 1.2;
+      g.position.set(x, 0, z);
+      if (i < 9) {
+        g.add(box(1.2, 1, 1.1, cols[i], 0, 0, 0)); g.add(roof(1.4, .6, 1.3, 0x3a2d22, 0, 1, 0));
+        g.add(box(.5, .4, .02, 0xffd27a, 0, .3, .56, .9));
+        for (let k = 0; k < 4; k++) g.add(box(.35, .08, .4, k % 2 ? C.ember : C.white, -.52 + k * .35, .9, .7));
+      } else {
+        g.add(box(1.5, 3.4, 1.4, C.grey, 0, 0, 0));
+        for (let r = 0; r < 6; r++) for (let c = 0; c < 3; c++) g.add(box(.25, .3, .02, 0xa8c4d8, -.45 + c * .45, .4 + r * .5, .71, .2));
+      }
+      g.scale.set(1, .001, 1); g.userData.delay = 200 + i * 140; scene.add(g); items.push(g);
+    }
+    return { ...S, tick(t, since) {
+      items.forEach((g) => { const k = ease((since - g.userData.delay) / 600); g.scale.y = Math.max(k, .001); });
+      sway(S.camera, t, .4, 4000);
+    } };
+  },
+
+  // 12 · Who builds it: money and young people leaving Benguet
+  outflow() {
+    const S = makeScene({ bg: 0x10251b, cam: [0, 11, 12], look: [0, 0, 0], zoom: 5.2, hemi: .8 }); const { scene } = S;
+    keyLight(scene, 0xfff1d6, 1.1, [4, 12, 6], 14);
+    scene.add(box(30, .3, 20, 0x2f5e3f, 0, -.3, 0));
+    for (let i = 0; i < 22; i++) {
+      const h = 1.2 + rand() * 2.4; const m = mesh(new THREE.ConeGeometry(.9 + rand() * .9, h, 5), [C.pine, 0x24553a, C.pine2][i % 3]);
+      const a = Math.PI + rand() * Math.PI, r = 3 + rand() * 4; m.position.set(Math.cos(a) * r * 1.3 - 1, h / 2, Math.sin(a) * r * .8 - 1.4); m.rotation.y = rand(); scene.add(m);
+    }
+    for (let i = 0; i < 7; i++) { const x = -2 + (i % 4) * .7, z = Math.floor(i / 4) * .9 - .4; scene.add(box(.5, .4, .5, [C.fog, C.resin, C.ember][i % 3], x, 0, z)); scene.add(roof(.6, .3, .6, 0x3a2d22, x, .4, z)); }
+    // road east
+    scene.add(box(10, .03, .5, 0x1b1f1c, 5.5, 0, .4));
+    const travellers = [];
+    for (let i = 0; i < 14; i++) {
+      let o;
+      if (i % 3 === 0) { o = person({ shirt: [C.resin, C.ember, C.fog][i % 3], bun: i % 2 === 0 }); o.scale.setScalar(.32); }
+      else { o = cyl(.16, .16, .05, 10, C.resin, 0, 0, 0, .35); o.rotation.x = Math.PI / 2; }
+      Object.assign(o.userData, { o: i / 14, coin: i % 3 !== 0 }); scene.add(o); travellers.push(o);
+    }
+    return { ...S, tick(t) {
+      travellers.forEach((o) => {
+        const k = ((t / 7000) + o.userData.o) % 1;
+        if (o.userData.coin) { o.position.set(-1 + k * 12, .6 + Math.sin(k * Math.PI) * 2.4, -.3 + k * .7); o.rotation.z = t / 200; }
+        else { o.position.set(-.6 + k * 11, Math.abs(Math.sin(t / 150)) * .04, .4); o.rotation.y = Math.PI / 2; o.userData.armR && (o.userData.armR.rotation.x = Math.sin(t / 150) * .5); }
+        o.visible = k < .95;
+      });
+    } };
+  },
+
+  // 13 · Saleng: one stick, one spark, a fire starts
+  saleng() {
+    const S = makeScene({ bg: C.night, cam: [0, 3, 12], look: [0, 1, 0], zoom: 2.6, hemi: .35 }); const { scene } = S;
+    scene.add(ground(C.night));
+    const f = fire(.7, 1); f.scale.setScalar(1.4); f.position.set(-.2, 0, 0); scene.add(f);
+    f.userData.level = 0;
+    const glow = new THREE.PointLight(0xffd27a, 0, 4, 1.5); glow.position.set(.6, 1.6, 1); scene.add(glow);
+    let full = false, lvl = 0;
+    return { ...S, onStep(n) { full = n >= 1; }, tick(t, since) {
+      const target = full ? 1 : (since > 900 ? .35 : 0);
+      lvl += (target - lvl) * .04; f.userData.level = lvl; f.userData.tick(t);
+      glow.intensity = since > 700 && since < 1200 ? 20 : 0; // the spark
+      f.rotation.y = Math.sin(t / 3000) * .25;
+    } };
+  },
+
+  // 15 · Packages: three fires light one at a time
+  fires() {
+    const S = makeScene({ cam: [0, 4, 14], look: [0, 1.2, 0], zoom: 3.2 }); const { scene } = S;
+    scene.add(ground(C.night));
+    const spots = [{ x: -6.3, s: .45, logs: 1 }, { x: 0, s: .9, logs: 4 }, { x: 6.3, s: 1.35, logs: 7 }];
+    const fires = spots.map(({ x, s, logs }) => { const f = fire(s, logs); f.position.x = x; f.userData.level = 0; scene.add(f); return f; });
+    const lv = [0, 0, 0]; let at = 0;
+    return { ...S, onStep(n) { at = n; }, tick(t) {
+      fires.forEach((f, i) => { lv[i] += ((at > i ? 1 : 0) - lv[i]) * .06; f.userData.level = lv[i]; f.userData.tick(t + i * 400); });
+    } };
+  },
+
+  // 18 · La Trinidad, 2076
+  future() {
+    const S = makeScene({ bg: 0x14261c, cam: [11, 10, 12], look: [-4.5, .5, 4.5], zoom: 6.2, hemi: .9 }); const { scene } = S;
+    keyLight(scene, 0xffd9a8, 1.2, [-6, 10, 8], 16);
+    scene.add(box(40, .3, 30, 0x3f7d4f, 0, -.3, -4));
+    for (let i = 0; i < 12; i++) { const h = 3 + rand() * 4; const m = mesh(new THREE.ConeGeometry(2 + rand() * 1.5, h, 5), [C.pine, 0x24553a][i % 2]); m.position.set(-12 + i * 2.2, h / 2, -9 - rand() * 2); scene.add(m); }
+    // strawberry terraces
+    for (let r = 0; r < 4; r++) {
+      scene.add(box(6 - r * .6, .35 * (r + 1), 1.2, [0x5a8f4f, 0x4f8446][r % 2], -4.5, 0, -2.6 - r * 1.2));
+      for (let i = 0; i < 9; i++) scene.add(ico(.1, C.ember, -7 + r * .3 + i * (5.4 - r * .6) / 9, .35 * (r + 1) + .08, -2.6 - r * 1.2 + (i % 2 ? .25 : -.25), 0));
+    }
+    const farmer = person({ shirt: C.resin, hair: C.night, skin: C.skin2 }); farmer.position.set(-2.4, 0, -1.2); farmer.rotation.y = .6; scene.add(farmer);
+    farmer.userData.armR.rotation.set(-1.4, 0, -.3);
+    const phone = box(.2, .34, .04, 0xffe6a8, -2.1, 1.25, -.75, 1.2); phone.rotation.y = .6; phone.rotation.x = -.4; scene.add(phone);
+    // trading post
+    scene.add(box(4.4, 1.6, 2, C.fog, 2.2, 0, -3.5)); scene.add(roof(5, 1, 2.6, C.ember, 2.2, 1.6, -3.5));
+    for (let i = 0; i < 6; i++) scene.add(box(.55, .35, .45, 0xb07a3c, .6 + (i % 3) * .6, (i > 2 ? .35 : 0), -2.1));
+    // highway + shops
+    scene.add(box(30, .03, 1.4, 0x22262a, 0, 0, 1.6));
+    for (let i = 0; i < 14; i++) scene.add(box(.6, .02, .1, C.fog, -13 + i * 2, .03, 1.6));
+    const windows = [];
+    for (let i = 0; i < 7; i++) {
+      const x = -6 + i * 2.1; scene.add(box(1.5, 1.2, 1.2, [C.resin, C.fog, C.pine2, C.ember][i % 4], x, 0, 3.4)); scene.add(roof(1.7, .6, 1.4, 0x3a2d22, x, 1.2, 3.4));
+      const w = box(.7, .45, .02, 0xffd27a, x, .4, 2.79, 1); scene.add(w); windows.push(w);
+    }
+    // a little jeepney-ish vehicle
+    const car = new THREE.Group(); car.add(box(1.4, .5, .6, C.ember, 0, .12, 0)); car.add(box(.9, .35, .55, C.fog, -.15, .62, 0));
+    [-.45, .45].forEach((x) => [-.3, .3].forEach((z) => { const w = cyl(.14, .14, .08, 8, C.night, x, .14, z); w.rotation.x = Math.PI / 2; car.add(w); }));
+    scene.add(car);
+    return { ...S, tick(t, since) {
+      const k = (t / 9000) % 1; car.position.set(-12 + k * 24, 0, 1.3);
+      windows.forEach((w, i) => { const off = since > 2500 + i * 450; w.material.emissiveIntensity = off ? .05 : 1; w.material.color.setHex(off ? 0x4a4a3f : 0xffd27a); });
+      phone.material.emissiveIntensity = 1 + Math.sin(t / 300) * .3;
+      sway(S.camera, t, .6, 4000);
+    } };
+  },
+
+  // 19 · Close: a small fire, burning steady
+  close() {
+    const S = makeScene({ bg: C.night, cam: [0, 3, 12], look: [0, 1.1, 0], zoom: 2.4, hemi: .3 }); const { scene } = S;
+    scene.add(ground(C.night));
+    const f = fire(.8, 5); scene.add(f);
+    return { ...S, tick(t) { f.userData.tick(t); f.rotation.y = t / 8000; } };
+  },
+};
+
+Object.assign(builders, builders2);
+
+// ── wire scenes to slides ──
+const stage3d = new Stage3D();
+const built = new Map();
+function sceneFor(slide) {
+  const host = slide.querySelector('.scene3d');
+  if (!host) return null;
+  if (!built.has(host)) built.set(host, builders[host.dataset.scene]());
+  return { host, obj: built.get(host) };
+}
+function onEnter(slide) {
+  const s = sceneFor(slide);
+  if (!s) return;
+  stage3d.mount(s.host, s.obj);
+  s.obj.onStep?.(+slide.dataset.at || 0);
+}
+document.addEventListener('slideenter', (e) => onEnter(e.target));
+document.addEventListener('slidestep', (e) => { const s = sceneFor(e.target); s?.obj.onStep?.(e.detail); });
+document.addEventListener('stagefit', () => stage3d.resize());
+const first = document.querySelector('.slide.is-active'); if (first) onEnter(first);
+(function loop(now) { requestAnimationFrame(loop); stage3d.render(now); })(performance.now());
