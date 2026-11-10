@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Saleng Works</title>
-<meta name="description" content="Saleng Works: simple systems for La Trinidad's small businesses, built here in Benguet.">
+<meta name="description" content="Saleng Works: systems built here, priced for here, and supported here, for La Trinidad's small businesses.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,800&display=swap" rel="stylesheet">
@@ -12,105 +12,138 @@
 <script type="importmap">{ "imports": { "three": "./vendor/three.module.js" } }</script>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="campfire" viewBox="0 0 64 64">
+    <path d="M32 4c7 10 15 16 15 28a15 15 0 0 1-30 0c0-7 3-11 7-14 0 5 2 9 5 10-1-10 1-17 3-24z" fill="#e3a42b"/>
+    <path d="M32 25c3 4 7 8 7 13a7 7 0 0 1-14 0c0-3 1-5 3-7 0 2 1 4 3 4-1-4 0-7 1-10z" fill="#b3202c"/>
+    <rect x="9" y="50" width="46" height="7" rx="3.5" transform="rotate(-12 32 53.5)" fill="#8a5a2b"/>
+    <rect x="9" y="50" width="46" height="7" rx="3.5" transform="rotate(12 32 53.5)" fill="#5a3a1c"/>
+  </symbol>
+</svg>
 <main class="stage">
 
-  <!-- 0 · Title -->
-  <section class="slide s-title">
-    <div class="scene3d scene-r fade-l" data-scene="bonfire"></div>
-    <div class="copy copy-l" style="top:330px">
-      <h1 class="display xl rise">Saleng<br><span class="amber">Works</span></h1>
-      <p class="roles rise" style="--i:1;color:var(--fog)">Systems and automation.</p>
-    </div>
+  <!-- ═══ 1 · OPENING HOOK ═══ -->
+
+  <!-- 1 · 6:43 PM. Walk to center, wait two seconds. No logo yet. -->
+  <section class="slide s-time">
+    <p class="clock display rise">6:43<span>PM</span></p>
   </section>
 
-  <!-- 1 · Seoul -->
-  <section class="slide">
-    <div class="mark">Saleng <b>Works</b></div>
-    <div class="scene3d scene-r" data-scene="seoul"></div>
-    <div class="copy copy-l">
-      <h1 class="display xl rise">Seoul,<br><span class="amber">9:14 PM</span></h1>
-      <p class="lead rise" style="--i:1">The owner is home. Every order still reaches her phone.</p>
+  <!-- 2 · Two owners, same moment. Click 1: Seoul's line. Click 2: La Trinidad's. -->
+  <section class="slide s-split">
+    <div class="scene3d scene-full" data-scene="split"></div>
+    <div class="side l">
+      <p class="place rise">Seoul<span>6:43 PM</span></p>
+      <p class="note" data-step="1">Taps her phone. Thirty seconds.<br><b>She goes home.</b></p>
     </div>
-    <p class="meta at-bottom rise" style="--i:2">A small family restaurant</p>
+    <div class="side r">
+      <p class="place rise" style="--i:1">La Trinidad<span>6:43 PM</span></p>
+      <p class="note" data-step="2">Counts the cash. Counts it again.<br><b>It doesn't match.</b></p>
+    </div>
+    <i class="seam" aria-hidden="true"></i>
   </section>
 
-  <!-- 2 · La Trinidad -->
-  <section class="slide">
-    <div class="mark">Saleng <b>Works</b></div>
-    <div class="scene3d scene-r" data-scene="trinidad"></div>
-    <div class="copy copy-l">
-      <h2 class="display l rise">La Trinidad,<br><span class="amber">9:14 PM</span></h2>
-      <p class="lead rise" style="--i:1">The owner is still at the counter, adding up the day's sales by hand.</p>
-    </div>
-    <p class="meta at-bottom rise" style="--i:2">The same kind of small business, here at home</p>
-  </section>
-
-  <!-- 3 · Access -->
+  <!-- 3 · Access. Click 1: "not talent, not effort". Click 2: "Access." -->
   <section class="slide s-access">
-    <div class="mark">Saleng <b>Works</b></div>
-    <div class="q" data-until="1">
-      <h2 class="display m rise">They both work hard.</h2>
-      <p class="display m rise amber" style="--i:1;margin-top:20px">So what's the difference?</p>
+    <div class="q" data-until="2">
+      <h2 class="display m rise">So what's the difference?</h2>
+      <p class="display s not" data-step="1">It's not talent.<br>It's not effort.</p>
     </div>
-    <p class="word display" data-step="1">Access.</p>
+    <p class="word display" data-step="2">Access.</p>
   </section>
 
-  <!-- 4 · Who we work for -->
-  <section class="slide s-who">
-    <div class="mark">Saleng <b>Works</b></div>
-    <div class="scene3d scene-r" data-scene="who"></div>
+  <!-- 4 · Name + Saleng Works -->
+  <section class="slide s-title">
+    <div class="scene3d scene-r fade-l" data-scene="who"></div>
     <div class="copy copy-l">
-      <h2 class="display rise">We're<br><span class="amber">Saleng Works.</span></h2>
-      <p class="lead wide rise" style="--i:2">We build simple systems for small businesses in La Trinidad and Baguio, so owners like her get the same access as that shop in Seoul.</p>
-      <p class="roles" data-step="1">Let me show you three of the businesses we've worked with.</p>
+      <h1 class="display xl rise">Saleng<br><span class="amber">Works</span></h1>
+      <p class="meta rise" style="--i:1">Wayne Banase · La Trinidad, Benguet</p>
+      <ul class="triad rise" style="--i:2"><li>Built here.</li><li>Priced for here.</li><li>Supported here.</li></ul>
     </div>
   </section>
 
-  <!-- 5 · Ate Analyn -->
-  <section class="slide" style="background:var(--night-2)">
-    <div class="mark r">Saleng <b>Works</b></div>
-    <div class="scene3d scene-l" data-scene="analyn"></div>
-    <div class="copy copy-r">
-      <h2 class="display xl rise">Ate<br>Analyn</h2>
-      <p class="roles rise" style="--i:1">Laundry · Tailor · Mom</p>
-      <p class="lead rise" style="--i:2">Orders lived on paper slips. Some got lost. Most nights, the numbers didn't match.</p>
-    </div>
-  </section>
+  <!-- ═══ 2 · THE PROBLEM ═══ -->
 
-  <!-- 6 · Analyn's kiosk -->
-  <section class="slide s-result s-kiosk">
+  <!-- 5 · The survey -->
+  <section class="slide s-survey">
     <div class="mark">Saleng <b>Works</b></div>
+    <div class="scene3d fade-l" data-scene="survey"></div>
     <div class="copy">
-      <h2 class="display m rise">A kiosk at the counter.</h2>
-      <p class="lead rise" style="--i:1">Every drop-off is saved with the customer's name, what they brought, and when it's due. She finds any order in seconds.</p>
-      <p class="result rise" style="--i:2" data-fill="analynResult">Since then, ___</p>
+      <h2 class="display big rise"><span data-fill="surveyCount">17</span><small> of </small><span data-fill="surveyTotal">20</span></h2>
+      <p class="lead wide rise" style="--i:1">small businesses I visited in La Trinidad track sales in a notebook, in their head, or not at all.</p>
+      <p class="meta rise" style="--i:2">Laundries, cafés, clothing shops, retail stores, dental clinics, law and accounting firms.</p>
     </div>
-    <div class="media device tablet portrait rise" style="--i:2"><div class="screen"><img src="assets/screens/kiosk.png" alt="The laundry kiosk check-in screen"><div class="ph">Add a screenshot:<br>assets/screens/kiosk.png</div></div></div>
-    <figure class="media photo rise" style="--i:3"><img src="assets/photos/analyn-kiosk.jpg" alt="Ate Analyn with the kiosk at her shop"><div class="ph">Add a photo:<br>assets/photos/analyn-kiosk.jpg</div></figure>
   </section>
 
-  <!-- 7 · Ate Rena -->
-  <section class="slide" style="background:#0f1a24">
+  <!-- 6 · Cost 1 -->
+  <section class="slide s-cost">
+    <div class="mark">Saleng <b>Works</b></div>
+    <div class="scene3d scene-r fade-l" data-scene="cost1"></div>
+    <div class="copy">
+      <p class="n rise">That costs them · 01</p>
+      <h2 class="display m rise" style="--i:1">Money they can't account for.</h2>
+      <p class="lead rise" style="--i:2">Every sale that isn't written down is gone from the books.</p>
+    </div>
+  </section>
+
+  <!-- 7 · Cost 2 -->
+  <section class="slide s-cost">
+    <div class="mark">Saleng <b>Works</b></div>
+    <div class="scene3d scene-r fade-l" data-scene="cost2"></div>
+    <div class="copy">
+      <p class="n rise">That costs them · 02</p>
+      <h2 class="display m rise" style="--i:1">Nights counting, not with family.</h2>
+      <p class="lead rise" style="--i:2">Every hour spent on the numbers is an hour not at the table.</p>
+    </div>
+  </section>
+
+  <!-- 8 · Cost 3 -->
+  <section class="slide s-cost">
+    <div class="mark">Saleng <b>Works</b></div>
+    <div class="scene3d scene-r fade-l" data-scene="cost3"></div>
+    <div class="copy">
+      <p class="n rise">That costs them · 03</p>
+      <h2 class="display m rise" style="--i:1">A business that only runs when they're watching.</h2>
+      <p class="lead rise" style="--i:2">The owner can never step away.</p>
+    </div>
+  </section>
+
+  <!-- 9 · The software that exists isn't built for them -->
+  <section class="slide s-gap">
+    <div class="mark r">Saleng <b>Works</b></div>
+    <h2 class="head display rise">The software out there <span class="amber">isn't built for them.</span></h2>
+    <div class="scene3d fade-b" data-scene="gap"></div>
+    <div class="cols">
+      <div class="rise" style="--i:1"><p class="k">Made for</p><p class="v display">Big Manila stores</p></div>
+      <div class="rise" style="--i:2"><p class="k">Priced as</p><p class="v display">Subscriptions they can't justify</p></div>
+      <div class="rise" style="--i:3"><p class="k">When it breaks</p><p class="v display">No one nearby to fix it</p></div>
+    </div>
+  </section>
+
+  <!-- ═══ 3 · PROOF ═══ -->
+
+  <!-- 10 · Doc. Rena -->
+  <section class="slide s-rena">
     <div class="mark">Saleng <b>Works</b></div>
     <div class="scene3d scene-r" data-scene="rena"></div>
-    <div class="copy copy-l" style="top:230px;width:760px">
-      <h2 class="display xl rise">Ate<br>Rena</h2>
-      <p class="roles rise" style="--i:1">EO Optical by day.<br>A snack stop on the side.</p>
-      <p class="lead rise" style="--i:2">Every other night, after a full day at work, she went to the snack stop just to check the sales.</p>
+    <div class="copy copy-l">
+      <h2 class="display xl rise">Doc.<br>Rena</h2>
+      <p class="roles rise" style="--i:1">Optometrist at EO Optical.<br>Her snack stop is 9 km away.</p>
+      <p class="lead rise" style="--i:2">For <b data-fill="renaHowLong">3 years</b>, she couldn't see how the store was doing until she got home at night.</p>
     </div>
   </section>
 
-  <!-- 8 · Rena's POS -->
+  <!-- 11 · Rena's POS -->
   <section class="slide s-result s-pos">
     <div class="mark">Saleng <b>Works</b></div>
     <div class="copy">
-      <h2 class="display m rise">Every sale, on her phone.</h2>
-      <p class="lead rise" style="--i:1">The snack stop's POS sends each sale to her phone as it happens. She checks from work or from home.</p>
-      <p class="result rise" style="--i:2" data-fill="renaResult">She hasn't had to make that night trip in ___ weeks.</p>
+      <h2 class="display m rise">A POS at the counter. Live on her phone.</h2>
+      <p class="lead rise" style="--i:1">We sat down with her, saw how the stop really runs, and set it up. Her staff ring up each sale like normal.</p>
+      <p class="result rise" style="--i:2">She sees every sale as it happens.</p>
     </div>
     <div class="media device tablet rise" style="--i:2"><div class="screen"><img src="assets/screens/pos.png" alt="The snack stop POS screen"><div class="ph">Add a screenshot:<br>assets/screens/pos.png</div></div></div>
     <div class="media has-feed device phone rise" style="--i:3"><div class="screen">
-      <img src="assets/screens/pos-phone.png" alt="Sales arriving on Ate Rena's phone"><div class="ph">assets/screens/pos-phone.png</div>
+      <img src="assets/screens/pos-phone.png" alt="Sales arriving on Doc. Rena's phone"><div class="ph">assets/screens/pos-phone.png</div>
       <div class="feed" aria-hidden="true">
         <h4>Snack stop · today</h4>
         <p class="total">Live<small>sales arrive as they happen</small></p>
@@ -122,120 +155,104 @@
         </ul>
       </div>
     </div></div>
-    <figure class="media photo rise" style="--i:4"><img src="assets/photos/rena-pos.jpg" alt="The POS at Ate Rena's snack stop"><div class="ph">Add a photo:<br>assets/photos/rena-pos.jpg</div></figure>
+    <figure class="media photo rise" style="--i:4"><img src="assets/photos/rena-pos.jpg" alt="The POS at Doc. Rena's snack stop"><div class="ph">Add a photo:<br>assets/photos/rena-pos.jpg</div></figure>
   </section>
 
-  <!-- 9 · CCDC -->
-  <section class="slide s-ccdc" style="background:#182019">
-    <div class="mark r">Saleng <b>Works</b></div>
-    <div class="scene3d scene-l" data-scene="ccdc" data-until="1"></div>
-    <div class="shots" data-step="1">
-      <div class="media device laptop one"><div class="screen"><img src="assets/screens/docgen.png" alt="The CCDC document generator: one tile per document type"><div class="ph">assets/screens/docgen.png</div></div></div>
-      <div class="media device laptop two"><div class="screen"><img src="assets/screens/docgen-tool.png" alt="Filling in a Certification of Graduation"><div class="ph">assets/screens/docgen-tool.png</div></div></div>
+  <!-- 12 · Montage. Click 1: Ate Analyn. Click 2: CCDC. -->
+  <section class="slide s-more">
+    <div class="mark">Saleng <b>Works</b></div>
+    <h2 class="head display s rise">And she's not the only one.</h2>
+    <div class="pane a" data-step="1">
+      <div class="shot"><div class="media device tablet portrait"><div class="screen"><img src="assets/screens/kiosk.png" alt="The laundry kiosk check-in screen"><div class="ph">assets/screens/kiosk.png</div></div></div></div>
+      <div class="txt">
+        <h3 class="display">Ate Analyn</h3>
+        <p class="roles">Laundry shop + tailor</p>
+        <p class="lead">A kiosk that tracks every customer and every order.</p>
+        <p class="result" data-fill="analynResult">No more lost clothes. Every sale tracked.</p>
+      </div>
     </div>
-    <div class="copy copy-r">
-      <h2 class="display xl rise">CCDC</h2>
-      <p class="meta rise" style="--i:1;margin-top:20px">Office of the Registrar</p>
-      <p class="roles rise" style="--i:2">10 to 30 minutes to type up one document.</p>
-      <p class="lead rise" style="--i:3">A lot of the staff's day went into drafting documents.</p>
-      <div data-step="1">
-        <p class="display s amber">Done in seconds.</p>
-        <p class="result" style="color:var(--fog);margin-top:20px" data-fill="ccdcResult">180 documents a week.</p>
+    <div class="pane b" data-step="2">
+      <div class="shot"><div class="media device laptop"><div class="screen"><img src="assets/screens/docgen-tool.png" alt="The CCDC document generator"><div class="ph">assets/screens/docgen-tool.png</div></div></div></div>
+      <div class="txt">
+        <h3 class="display">CCDC</h3>
+        <p class="roles">Registrar's office</p>
+        <p class="lead">10 to 30 minutes to draft each document.</p>
+        <p class="result">Now it takes seconds.</p>
       </div>
     </div>
   </section>
 
-  <!-- 10 · The turn -->
+  <!-- 13 · Same story (plants the tagline) -->
   <section class="slide s-turn">
     <div class="mark">Saleng <b>Works</b></div>
     <div class="scene3d scene-top fade-b" data-scene="turn"></div>
     <div class="copy">
-      <h2 class="display l rise">Different businesses.<br><span class="amber">Same problem.</span></h2>
-      <p class="lead rise" style="--i:1;max-width:17ch">Too much of their time went into work a simple system could do for them.</p>
+      <h2 class="display l rise">Different businesses.<br><span class="amber">Same story.</span></h2>
+      <p class="lead rise" style="--i:1;max-width:16ch">Owners stuck doing it the hard way.</p>
     </div>
   </section>
 
-  <!-- 11 · 9 in 10 -->
-  <section class="slide s-micro">
+  <!-- ═══ 4 · HOW SALENG WORKS WORKS ═══ -->
+
+  <!-- 14 · Audit → Build → Support. One step per click. -->
+  <section class="slide s-method">
+    <div class="mark r">Saleng <b>Works</b></div>
+    <h2 class="head display rise">Every client. <span class="amber">Same three steps.</span></h2>
+    <div class="scene3d fade-b" data-scene="method"></div>
+    <div class="cols">
+      <div data-step="1"><p class="n">01</p><h3 class="display amber">Audit</h3><p class="terms"><b>Free.</b> We spend time in the business and find exactly where it's losing time or money.</p></div>
+      <div data-step="2"><p class="n">02</p><h3 class="display flame">Build</h3><p class="terms"><b>One to three weeks</b>, around how the business already works. Hardware too: the POS, the kiosk, the printer.</p></div>
+      <div data-step="3"><p class="n">03</p><h3 class="display red">Support</h3><p class="terms"><b>We're in La Trinidad.</b> <span data-fill="supportDistance">15 minutes</span> away, not a call center in Manila.</p></div>
+    </div>
+  </section>
+
+  <!-- 15 · Kits: it gets faster every time -->
+  <section class="slide s-kits">
     <div class="mark">Saleng <b>Works</b></div>
-    <div class="scene3d scene-r fade-l" data-scene="micro"></div>
+    <div class="scene3d fade-l" data-scene="devices"></div>
     <div class="copy">
-      <h2 class="display big rise">9 in 10</h2>
-      <p class="lead rise" style="--i:1">businesses in the Philippines are micro businesses.</p>
-      <p class="meta rise" style="--i:2" data-fill="statSource">Source: ___</p>
+      <h2 class="display m rise">It gets faster<br><span class="amber">every time.</span></h2>
+      <p class="lead wide rise" style="--i:1">Each build becomes a ready kit. The next client in that industry gets their system sooner, and for less.</p>
+    </div>
+    <div class="kits">
+      <div class="kit k1 rise" style="--i:2"><p class="display">Laundry kit</p><small>from Ate Analyn's kiosk</small></div>
+      <div class="kit k2 rise" style="--i:3"><p class="display">Food stall kit</p><small>from Doc. Rena's POS</small></div>
+      <div class="kit k3 rise" style="--i:4"><p class="display">Office documents kit</p><small>from CCDC's document generator</small></div>
     </div>
   </section>
 
-  <!-- 12 · Who builds it -->
-  <section class="slide s-out" style="background:var(--night-2)">
+  <!-- ═══ 5 · BUSINESS MODEL AND MOMENTUM ═══ -->
+
+  <!-- 16 · Value, then price -->
+  <section class="slide s-price">
     <div class="mark">Saleng <b>Works</b></div>
-    <div class="scene3d scene-full" data-scene="outflow"></div>
-    <div class="copy">
-      <h2 class="display l rise">Who builds it?</h2>
-      <p class="lead rise" style="--i:1">If it's built in Manila or abroad, the money leaves Benguet.</p>
-      <p class="lead" data-step="1" style="color:var(--resin)">And the young people who could have built it leave too.</p>
+    <p class="meta rise">A system like Doc. Rena's</p>
+    <div class="vs">
+      <div class="rise" style="--i:1"><p class="k">Big-city company</p><p class="v display them"><span data-fill="cityPrice">₱15,000</span>+</p></div>
+      <div class="rise" style="--i:2"><p class="k">Saleng Works</p><p class="v display amber"><small>from </small>₱3,500</p></div>
     </div>
+    <p class="lead wide after rise" style="--i:3">Packages from ₱3,500, up to fully custom builds.</p>
   </section>
 
-  <!-- 13 · Saleng -->
-  <section class="slide s-saleng">
-    <div class="mark">Saleng <b>Works</b></div>
-    <div class="scene3d fade-l" data-scene="saleng"></div>
-    <div class="copy">
-      <h2 class="display xl rise">Saleng.</h2>
-      <p class="lead rise" style="--i:1">You only need a small piece to start a fire.</p>
-      <p class="spark" data-step="1">Saleng Works aims to be <em>the spark</em> that brings technology and innovation to La Trinidad.</p>
-    </div>
-  </section>
-
-  <!-- 14 · Free systems audit -->
-  <section class="slide s-audit">
-    <div class="mark">Saleng <b>Works</b></div>
-    <div class="copy">
-      <h2 class="display l rise">Every project starts with a <span class="free">free systems audit.</span></h2>
-      <p class="lead wide rise" style="--i:1;color:#cfe0d3">I visit the business, watch how the work is done, and show the owner where they're losing time or money. No payment, no obligation.</p>
-    </div>
-    <p class="verbs display rise" style="--i:2"><span>Visit.</span><span>Watch.</span><span>Show.</span></p>
-  </section>
-
-  <!-- 15 · Packages -->
+  <!-- 17 · Packages. Spark, Flame, Bonfire light one per click; click 4: the Care Plan. -->
   <section class="slide s-pack">
     <div class="mark">Saleng <b>Works</b></div>
     <div class="scene3d scene-top fade-b" data-scene="fires"></div>
-    <h2 class="head display m rise" data-until="1">Then, pick a package.</h2>
-    <p class="fixed" data-step="4">Spark and Flame have fixed prices, posted publicly. The price doesn't change.</p>
+    <h2 class="head display m rise" data-until="1">Pick a package.</h2>
+    <p class="fixed" data-step="4">Then a monthly <b>Care Plan from ₱400</b> for updates and support. Every new client adds income <b>every month</b>, not just once.</p>
     <div class="cols">
-      <div data-step="1"><h3 class="display amber">Spark</h3><p class="price display">₱3,500</p><p class="terms">One simple system, the same screens for everyone. Up to 6 features. Ready in 3–5 days.</p></div>
-      <div data-step="2"><h3 class="display flame">Flame</h3><p class="price display">₱6,500</p><p class="terms">For a business with staff. Own logins, one connected system, an owner dashboard you can check from anywhere. Up to 12 features. Ready in 1–2 weeks.</p></div>
-      <div data-step="3"><h3 class="display red">Bonfire</h3><p class="price display">By quote</p><p class="terms">More than 12 features, more than one branch, or systems that connect. Price and scope agreed in writing before work starts.</p></div>
+      <div data-step="1"><h3 class="display amber">Spark</h3><p class="price display">₱3,500</p><p class="terms">One simple system. Ready in days.</p></div>
+      <div data-step="2"><h3 class="display flame">Flame</h3><p class="price display">₱6,500</p><p class="terms">Staff logins, one connected system, an owner dashboard.</p></div>
+      <div data-step="3"><h3 class="display red">Bonfire</h3><p class="price display">By quote</p><p class="terms">Fully custom: more features, more branches, connected systems.</p></div>
     </div>
   </section>
 
-  <!-- 16 · Payment + Care Plan -->
-  <section class="slide s-pay">
-    <div class="half">
-      <div class="mark">Saleng <b>Works</b></div>
-      <h2 class="display m rise">Pay half to start.<br><span class="amber">Half when it works.</span></h2>
-      <div class="split rise" style="--i:1"><div>50% to start</div><div>50% when it works</div></div>
-      <p class="lead wide rise" style="--i:2">It runs on the phones and computers they already have.</p>
-    </div>
-    <div class="half care">
-      <h2 class="display m rise" style="--i:1">Care Plan</h2>
-      <div class="rows rise" style="--i:2">
-        <div class="row"><span>Spark</span><b>₱400<small> /month</small></b></div>
-        <div class="row"><span>Flame</span><b>₱700<small> /month</small></b></div>
-        <div class="row"><span>Bonfire</span><b>₱1,500<small> /month</small></b></div>
-      </div>
-      <p class="lead wide rise" style="--i:3;margin-top:40px">Hosting, backups, fixes, and small updates.</p>
-    </div>
-  </section>
-
-  <!-- 17 · Built so far -->
+  <!-- 18 · Traction -->
   <section class="slide s-built">
     <div class="mark">Saleng <b>Works</b></div>
     <div class="copy">
-      <h2 class="display m rise"><span class="amber" data-fill="systemsCount">___</span> systems built so far.</h2>
-      <p class="lead wide rise" style="--i:1;max-width:44ch">Ate Analyn, Ate Rena, and CCDC are three of them. Another one is in progress for a local cooperative.</p>
+      <h2 class="display rise">Not mockups.<br><span class="amber">Running in La Trinidad right now.</span></h2>
+      <p class="lead wide rise" style="--i:1">Doc. Rena, Ate Analyn, CCDC, Garcia Accounting, and a local cooperative on the way.</p>
     </div>
     <div class="grid">
       <div class="item rise" style="--i:2;left:0;top:94px"><div class="media device laptop sm"><div class="screen"><img src="assets/screens/docgen.png" alt="CCDC document generator"><div class="ph">assets/screens/docgen.png</div></div></div></div>
@@ -245,38 +262,62 @@
       <div class="item rise" style="--i:6;left:1386px;top:114px"><div class="media device tablet sm"><div class="screen"><img src="assets/screens/coop.png" alt="Cooperative system"><div class="ph">assets/screens/coop.png</div></div></div></div>
       <p class="caption rise" style="--i:2;left:0;top:390px;width:380px"><b>CCDC Registrar</b>Document generator</p>
       <p class="caption rise" style="--i:3;left:450px;top:390px;width:260px"><b>Ate Analyn</b>Laundry kiosk</p>
-      <p class="caption rise" style="--i:4;left:750px;top:390px;width:170px"><b>Ate Rena</b>Snack stop POS</p>
+      <p class="caption rise" style="--i:4;left:750px;top:390px;width:170px"><b>Doc. Rena</b>Snack stop POS</p>
       <p class="caption rise" style="--i:5;left:936px;top:390px;width:380px"><b>Garcia Accounting</b>BIR deadline tracker</p>
       <p class="caption rise" style="--i:6;left:1386px;top:390px;width:330px"><b>Local cooperative</b>In progress</p>
     </div>
   </section>
 
-  <!-- 18 · 2076 -->
-  <section class="slide s-future" style="background:#14261c">
+  <!-- ═══ 6 · THE ASK, THE VISION ═══ -->
+
+  <!-- 19 · The ask. Click 1: what it buys and what it gets. -->
+  <section class="slide s-ask">
     <div class="mark">Saleng <b>Works</b></div>
-    <div class="scene3d scene-full" data-scene="future"></div>
-    <div class="copy">
-      <h2 class="display l rise">La Trinidad, <span class="amber">2076</span></h2>
-      <p class="lead wide rise" style="--i:1">Farmers tracking harvests and buyers on their phones. A trading post with no paper receipts. Shops where the owners go home on time.</p>
-      <p class="roles" data-step="1" style="max-width:22ch">Built by people who grew up here, studied here, and stayed here.</p>
+    <h2 class="display rise"><span class="amber" data-fill="askAmount">₱35,000</span> <i>→</i> <span data-fill="goalCount">10</span> businesses<br><small>by <span data-fill="goalDate">June 2027</span></small></h2>
+    <div class="cols" data-step="1">
+      <div><p class="k">What it buys</p><ul><li>A laptop for deploying</li><li>One demo set, a POS and a kiosk, to show at any counter</li></ul></div>
+      <div><p class="k">What it gets</p><ul><li><span data-fill="goalCount">10</span> new businesses on Saleng systems</li><li>My first IT partner, to share the load</li></ul></div>
     </div>
   </section>
 
-  <!-- 19 · Close -->
-  <section class="slide s-close">
+  <!-- 20 · Imagine La Trinidad, 50 years from now. Click 1: who built it. -->
+  <section class="slide s-future">
     <div class="mark">Saleng <b>Works</b></div>
-    <div class="scene3d fade-l" data-scene="close"></div>
+    <div class="scene3d scene-full" data-scene="future"></div>
     <div class="copy">
-      <p class="lead wide rise">Our businesses are going to go digital either way.</p>
-      <h2 class="display xl rise" style="--i:1">Built here<br><span class="amber">in Benguet.</span></h2>
-      <p class="thanks rise" style="--i:3">Thank you.</p>
+      <h2 class="display l rise">Imagine La Trinidad,<br><span class="amber">50 years from now.</span></h2>
+      <p class="lead wide rise" style="--i:1">Farmers tracking harvests on their phones. A trading post with no paper receipts. Shops where the owners go home on time.</p>
+      <p class="roles" data-step="1">Built by people who grew up here, studied here, and stayed here.</p>
     </div>
-    <p class="meta at-bottom rise" style="--i:4">Wayne Banase · Saleng Works</p>
+  </section>
+
+  <!-- ═══ 7 · CLOSE ═══ -->
+
+  <!-- 21 · Back to 6:43, the gap closed. Click 1: the tagline. Then stand still for two seconds. -->
+  <section class="slide s-split s-close">
+    <div class="scene3d scene-full" data-scene="splitDone"></div>
+    <div class="side l">
+      <p class="place rise">Seoul<span>6:43 PM</span></p>
+      <p class="note rise" style="--i:2">Checks her phone.<br><b>Goes home.</b></p>
+    </div>
+    <div class="side r">
+      <p class="place rise" style="--i:1">La Trinidad<span>6:43 PM</span></p>
+      <p class="note rise" style="--i:3">Doc. Rena checks her phone.<br><b>Goes home.</b></p>
+    </div>
+    <i class="seam" aria-hidden="true"></i>
+    <div class="band" data-step="1">
+      <svg class="logo" aria-hidden="true"><use href="#campfire"/></svg>
+      <div>
+        <p class="name">Saleng <b>Works</b></p>
+        <h2 class="display">We help La Trinidad businesses<br><span class="amber">stop doing it the hard way.</span></h2>
+      </div>
+      <p class="thanks display">Salamat po.</p>
+    </div>
   </section>
 
   <nav class="controls" aria-label="Slides">
     <button class="prev" aria-label="Previous slide">←</button>
-    <span class="count" aria-live="polite">1 / 19</span>
+    <span class="count" aria-live="polite">1 / 21</span>
     <button class="next">Next →</button>
   </nav>
   <div class="progress" aria-hidden="true"><i></i></div>

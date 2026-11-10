@@ -6,6 +6,7 @@ export const C = {
   night: 0x151a16, pine: 0x1b4430, pine2: 0x2f6b4c, leaf: 0x3f7d4f, resin: 0xe3a42b, ember: 0xc0222f,
   fog: 0xe5e7e1, skin: 0xc68a63, skin2: 0x9c6644, wood: 0x8a5a2b, dark: 0x3d2610, white: 0xf7f4ea,
   grey: 0x6f756c, glow: 0xffb347,
+  bg: 0x10251b, // the slide background: scene backgrounds and ground planes match it exactly
 };
 
 export const mat = (c, e = 0) => new THREE.MeshLambertMaterial({ color: c, flatShading: true, emissive: e ? c : 0x000000, emissiveIntensity: e });
@@ -114,7 +115,7 @@ export function glasses(c = C.night) {
 }
 
 // ── Scene shell ─────────────────────────────────────────────
-export function makeScene({ bg = C.night, cam = [10, 9, 10], look = [0, 1.4, 0], zoom = 5, hemi = .9, fog } = {}) {
+export function makeScene({ bg = C.bg, cam = [10, 9, 10], look = [0, 1.4, 0], zoom = 5, hemi = .9, fog } = {}) {
   const scene = new THREE.Scene();
   scene.background = bg === null ? null : new THREE.Color(bg);
   if (fog) scene.fog = new THREE.Fog(fog[0], fog[1], fog[2]);
@@ -159,6 +160,7 @@ export class Stage3D {
     const w = this.host.clientWidth, h = this.host.clientHeight;
     this.r.setPixelRatio(Math.min(2, (window.devicePixelRatio || 1) * (window.STAGE_SCALE || 1)));
     this.r.setSize(w, h, false);
+    if (this.active.resize) return this.active.resize(w, h); // split scenes size their own cameras
     const cam = this.active.camera, z = cam.userData.zoom, a = w / h;
     cam.left = -z * a; cam.right = z * a; cam.top = z; cam.bottom = -z; cam.updateProjectionMatrix();
   }
@@ -167,6 +169,6 @@ export class Stage3D {
     // rAF timestamps can be a little older than performance.now() at mount, so clamp at 0
     const t = now, since = Math.max(0, now - this.t0);
     this.active.tick?.(t, since);
-    this.r.render(this.active.scene, this.active.camera);
+    if (this.active.draw) this.active.draw(this.r); else this.r.render(this.active.scene, this.active.camera);
   }
 }

@@ -1,22 +1,27 @@
 // ─────────────────────────────────────────────────────────────
-//  EDIT THIS FILE to fill in the blanks from your script.
-//  Anything still containing "___" shows on the slide with an
-//  amber dashed underline, so you can spot what's left to fill.
+//  EDIT THIS FILE to change the numbers quoted in the pitch.
+//  Anything containing "___" shows on its slide with an amber
+//  dashed outline, so you can spot what's left to fill.
 // ─────────────────────────────────────────────────────────────
 window.CONTENT = {
-  // Slide 6 · Ate Analyn's result (e.g. "Since then, she hasn't lost a single order.")
-  analynResult: 'Since then, ___',
+  // Slide 5 · your own survey (only show what you counted)
+  surveyCount: '17',
+  surveyTotal: '20',
 
-  // Slide 8 · Ate Rena's result (e.g. "She hasn't made that night trip in 6 weeks.")
-  renaResult: "She hasn't had to make that night trip in ___ weeks.",
+  // Slide 10 · how long Doc. Rena couldn't see her sales
+  renaHowLong: '3 years',
 
-  // Slide 9 · CCDC totals
-  ccdcResult: 'About 180 documents a week. That’s about 52 hours back, every week.',
+  // Slide 12 · Ate Analyn's result
+  analynResult: 'No more lost clothes. Every sale tracked.',
 
-  // Slide 11 · source line under the 9-in-10 stat (check the exact figure and year)
-  statSource: 'Source: DTI MSME Statistics (2024)',
+  // Slide 14 · how far you are from clients
+  supportDistance: '15 minutes',
 
-  // Slide 17 · how many systems you've built so far
-  systemsCount: '___',
+  // Slide 16 · what a big-city company would charge for Doc. Rena's system
+  cityPrice: '₱15,000',
 
+  // Slide 19 · the ask. The script says ₱35,000 aloud; keep the slide and the words the same.
+  askAmount: '₱35,000',
+  goalCount: '10',
+  goalDate: 'June 2027',
 };
