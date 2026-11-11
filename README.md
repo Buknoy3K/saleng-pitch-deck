@@ -14,7 +14,7 @@ Slides that reveal in steps (one click each):
 | 2 Seoul / La Trinidad | Seoul's line, then La Trinidad's |
 | 3 Access | "not talent, not effort", then **Access.** |
 | 6 It costs them | money, nights, freedom |
-| 7 Not built for them | made for Manila, priced as subscriptions, no one nearby to fix it |
+| 7 Not built for them | made for Manila, big-city prices, no one nearby to fix it |
 | 10 Not the only one | Auntie Analyn, then CCDC |
 | 12 Audit → Build → Support | one diorama per step |
 | 15 Packages | Spark, Flame, Bonfire light one per click; click 4 is the Care Plan line |
