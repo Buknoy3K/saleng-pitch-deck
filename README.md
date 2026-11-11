@@ -19,7 +19,7 @@ Slides that reveal in steps (one click each):
 | 12 Audit → Build → Support | one diorama per step |
 | 15 Packages | Spark, Flame, Bonfire light one per click; click 4 is the Care Plan line |
 | 17 The ask | what it buys / what it gets |
-| 18 50 years from now | made right here in the mountains, then the Silicon Valley of the North |
+| 18 50 years from now | made right here in the mountains, then "Not imported. Homegrown." |
 | 19 Close | the line is up on entry; the click lands 6:43 (then stand still for two seconds) |
 
 ## Numbers quoted on stage
