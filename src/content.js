@@ -8,19 +8,19 @@ window.CONTENT = {
   surveyCount: '17',
   surveyTotal: '20',
 
-  // Slide 10 · how long Doc. Rena couldn't see her sales
+  // Slide 8 · how long Doc. Rena couldn't see her sales
   renaHowLong: '3 years',
 
-  // Slide 12 · Ate Analyn's result
+  // Slide 10 · Auntie Analyn's result
   analynResult: 'No more lost clothes. Every sale tracked.',
 
-  // Slide 14 · how far you are from clients
+  // Slide 12 · how far you are from clients
   supportDistance: '15 minutes',
 
-  // Slide 16 · what a big-city company would charge for Doc. Rena's system
+  // Slide 14 · what a big-city company would charge for Doc. Rena's system
   cityPrice: '₱15,000',
 
-  // Slide 19 · the ask. The script says ₱35,000 aloud; keep the slide and the words the same.
+  // Slide 17 · the ask. The script says ₱35,000 aloud; keep the slide and the words the same.
   askAmount: '₱35,000',
   goalCount: '10',
   goalDate: 'June 2027',
