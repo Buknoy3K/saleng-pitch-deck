@@ -13,7 +13,7 @@ Slides that reveal in steps (one click each):
 | --- | --- |
 | 2 Seoul / La Trinidad | Seoul's line, then La Trinidad's |
 | 3 Access | "not talent, not effort", then **Access.** |
-| 6 What it costs them | stuck in one head, mistakes no one catches, hours of repeat work |
+| 6 It costs them | money, nights, freedom |
 | 7 Not built for them | made for Manila, priced as subscriptions, no one nearby to fix it |
 | 10 Not the only one | Auntie Analyn, then CCDC |
 | 12 Audit → Build → Support | one diorama per step |

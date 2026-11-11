@@ -153,7 +153,7 @@ body.hide-ui .controls:hover { opacity: 1; }
 .s-gap .v { font-size: 52px; margin-top: 14px; line-height: .95; }
 .s-costs .n, .s-method .n { font-size: 28px; font-weight: 800; color: var(--mute); }
 .s-method h3 { font-size: 80px; margin-top: 4px; }
-.s-costs h3 { font-size: 56px; margin-top: 6px; white-space: nowrap; }
+.s-costs h3 { font-size: 80px; margin-top: 4px; }
 .s-costs .terms, .s-method .terms { margin: 14px auto 0; font-size: 26px; line-height: 1.35; color: var(--soft); max-width: 28ch; }
 .s-costs .terms b, .s-method .terms b { color: var(--fog); }
 

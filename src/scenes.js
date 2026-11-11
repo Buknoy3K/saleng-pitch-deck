@@ -495,14 +495,14 @@ const builders3 = {
     } };
   },
 
-  // 6 · What doing it by hand costs: stuck in one head · mistakes no one catches · hours of repeat work. One diorama per step.
+  // 6 · What it costs them: money (left) · nights (middle) · freedom (right). One diorama per step.
   costs() {
     const S = makeScene({ cam: [0, 8, 14], look: [0, 1, 0], zoom: 2.5 }); const { scene } = S;
     keyLight(scene, 0xfff1d6, 1.1, [4, 10, 8], 12);
     const groups = [0, 1, 2].map((i) => { const g = new THREE.Group(); g.position.x = -4.4 + i * 4.4; g.scale.setScalar(.001); scene.add(g); return g; });
     const plinth = (g, c) => g.add(box(3.2, .5, 3.2, c, 0, -.5, 0));
-    // 01 · the shop only runs while the owner is in it: she walks out, the window goes dark
-    const A = groups[0]; plinth(A, C.resin);
+    // freedom (03, right) · the shop only runs while the owner is in it: she walks out, the window goes dark
+    const A = groups[2]; plinth(A, C.ember);
     A.add(box(2.2, 1.5, 1.2, C.fog, 0, 0, -.9));
     // gable roof: the triangle faces the camera, ridge running front to back
     const gable = new THREE.ExtrudeGeometry(new THREE.Shape([new THREE.Vector2(-1.3, 0), new THREE.Vector2(1.3, 0), new THREE.Vector2(0, .9)]), { depth: 1.4, bevelEnabled: false });
@@ -511,8 +511,8 @@ const builders3 = {
     A.add(box(.5, 1.1, .04, C.night, .6, 0, -.28));
     A.add(box(1.4, .6, .4, C.wood, -.45, 0, .1));
     const owner = person({ shirt: C.ember, skin: C.skin2 }); owner.scale.setScalar(.6); A.add(owner);
-    // 02 · a notebook that doesn't add up, coins slipping off the counter
-    const B = groups[1]; plinth(B, 0xff7a3d); // flame, to match its heading
+    // money (01, left) · a notebook that doesn't add up, coins slipping off the counter
+    const B = groups[0]; plinth(B, C.resin);
     B.add(box(2.4, .8, .8, C.wood, 0, 0, -.1)); B.add(box(2.5, .06, .9, 0x5c3a1a, 0, .8, -.1));
     const book = new THREE.Group(); book.position.set(-.5, .86, -.1); book.rotation.y = .15; B.add(book);
     book.add(box(.8, .05, .55, C.white, 0, 0, 0)); book.add(box(.5, .02, .04, 0x9aa094, 0, .05, -.12)); book.add(box(.4, .02, .05, C.ember, .05, .05, .1));
@@ -521,8 +521,8 @@ const builders3 = {
     clerk.userData.armR.rotation.set(-2.6, 0, -.6); clerk.userData.head.rotation.z = .2; // hand to head
     const coins = [];
     for (let i = 0; i < 7; i++) { const c = cyl(.1, .1, .04, 8, C.resin); c.userData = { o: i / 7, x: .3 + rand() * .7, z: -.3 + rand() * .4 }; B.add(c); coins.push(c); }
-    // 03 · 6:43 PM and still writing, papers piling up
-    const Cg = groups[2]; plinth(Cg, C.ember);
+    // nights (02, middle) · 6:43 PM and still writing, papers piling up
+    const Cg = groups[1]; plinth(Cg, 0xff7a3d); // flame, to match its heading
     Cg.add(box(3, 2.4, .1, 0xe8dfca, 0, 0, -1.5));
     const ck = clock(.32); ck.position.set(.9, 1.9, -1.4); Cg.add(ck); ck.userData.set(6 + 43 / 60);
     Cg.add(box(2.2, .75, 1, C.wood, 0, 0, -.5));
