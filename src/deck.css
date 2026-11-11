@@ -167,20 +167,20 @@ body.hide-ui .controls:hover { opacity: 1; }
 .s-pos .phone { left: 1500px; top: 260px; transform: rotate(4deg); z-index: 2; }
 .s-pos .photo { left: 1000px; top: 70px; width: 380px; height: 240px; transform: rotate(-3deg); z-index: 2; }
 
-/* 10 · Montage */
-.s-more .pane { position: absolute; top: 250px; width: 820px; height: 720px; }
+/* 10 · Montage: two matching columns, device on a shared baseline, text below */
+.s-more .head { top: 140px; }
+.s-more .pane { position: absolute; top: 250px; width: 820px; height: 760px; }
 .s-more .pane.a { left: var(--m); } .s-more .pane.b { left: 1004px; }
-.s-more .shot { position: absolute; left: 0; top: 0; width: 820px; height: 420px; }
+.s-more .shot { position: absolute; left: 0; top: 0; width: 820px; height: 384px; }
 .s-more .shot .device { transform-origin: top left; }
-.s-more .pane.a .device { transform: scale(.52) rotate(-2deg); }
-.s-more .pane.b .device { left: 50px; top: 30px; transform: scale(.62) rotate(1.5deg); }
-.s-more .pane.a .txt { position: absolute; left: 340px; top: 20px; width: 480px; }
-.s-more .pane.b .txt { position: absolute; left: 0; top: 440px; width: 820px; }
-.s-more .txt > * + * { margin-top: 18px; }
+.s-more .pane.a .device { left: 275px; top: 0; transform: scale(.48); }
+.s-more .pane.b .device { left: 140px; top: 22px; transform: scale(.6); }
+.s-more .txt { position: absolute; left: 0; top: 440px; width: 820px; text-align: center; }
+.s-more .txt > * + * { margin-top: 16px; }
 .s-more h3 { font-size: 80px; }
 .s-more .roles { font-size: 36px; }
-.s-more .lead { font-size: 34px; max-width: 24ch; }
-.s-more .result { font-size: 40px; }
+.s-more .lead { font-size: 34px; max-width: 30ch; margin-left: auto; margin-right: auto; }
+.s-more .result { font-size: 40px; max-width: none; }
 
 /* 11 · Turn */
 .s-turn .copy { left: var(--m); top: 640px; width: 1700px; display: flex; gap: 80px; align-items: flex-end; justify-content: space-between; }
