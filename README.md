@@ -11,6 +11,7 @@ Slides that reveal in steps (one click each):
 
 | Slide | Clicks |
 | --- | --- |
+| 1 6:43 PM | opens blank; the click pops out 6:43 PM |
 | 2 Seoul / La Trinidad | Seoul's line, then La Trinidad's |
 | 3 Access | "not talent, not effort", then **Access.** |
 | 6 It costs them | money, nights, freedom |

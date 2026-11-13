@@ -114,6 +114,8 @@ body.hide-ui .controls:hover { opacity: 1; }
 
 /* 1 · 6:43 PM */
 .s-time .clock { position: absolute; left: 0; right: 0; top: 300px; text-align: center; font-size: 400px; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+.s-time .clock[data-step] { transform: scale(.7); transition: opacity .35s ease, transform .6s cubic-bezier(.3, 1.6, .5, 1); }
+.s-time .clock[data-step].shown { transform: none; }
 .s-time .clock span { font-size: 120px; color: var(--resin); letter-spacing: -0.02em; margin-left: 28px; }
 
 /* 2 · split screen */
