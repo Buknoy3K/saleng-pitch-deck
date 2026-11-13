@@ -40,7 +40,7 @@ export function person({ shirt = C.fog, hair = C.night, skin = C.skin, bun = fal
 }
 
 let _glow;
-function glowTex() {
+export function glowTex() {
   if (_glow) return _glow;
   const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d');
   const g = x.createRadialGradient(64, 64, 0, 64, 64, 64); g.addColorStop(0, 'rgba(255,255,255,.9)'); g.addColorStop(.4, 'rgba(255,255,255,.35)'); g.addColorStop(1, 'rgba(255,255,255,0)');

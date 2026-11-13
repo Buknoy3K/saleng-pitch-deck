@@ -1,5 +1,5 @@
 // One builder per illustrated slide. Each returns { scene, camera, tick(t, since), onStep?(n) }.
-import { THREE, C, ground, mesh, box, cyl, ico, roof, person, fire, clock, glasses, makeScene, keyLight, sway, Stage3D } from './kit.js';
+import { THREE, C, ground, mesh, box, cyl, ico, roof, person, fire, glowTex, clock, glasses, makeScene, keyLight, sway, Stage3D } from './kit.js';
 
 const ease = (x) => 1 - Math.pow(1 - Math.min(Math.max(x, 0), 1), 3);
 const rand = (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();
@@ -474,7 +474,25 @@ const builders2 = {
     const hop = 650, hold = 2600, cycle = shops.length * hop + hold;
     const from = new THREE.Vector3(-7, 3, 4);
     const hist = [];
-    return { ...S, tick(t, since) {
+    // the saleng: one burning pine stick, appears with "made right here in the mountains"
+    // big, in the front corner of the valley, with a warm halo and light spilling onto the shops
+    const salengAt = new THREE.Vector3(5.0, 0, 10.0);
+    const saleng = fire(.6, 1); saleng.position.copy(salengAt); saleng.rotation.y = Math.PI / 4; saleng.scale.setScalar(.001); scene.add(saleng);
+    saleng.traverse((o) => { if (o.material?.color?.getHex() === 0xd8341f) o.material.opacity = .45; }); // thinner red skin so the orange and yellow core show
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex(), color: 0xffa040, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending }));
+    scene.add(halo);
+    const spill = new THREE.PointLight(0xff9a40, 0, 12, 1.2); spill.position.set(salengAt.x - 1, 2.5, salengAt.z - 1); scene.add(spill);
+    const backOut = (u) => 1 + 2.2 * Math.pow(u - 1, 3) + 1.2 * Math.pow(u - 1, 2); // eases in with a small pop past full size
+    let made = false, madeAt = 0, grow = 0;
+    return { ...S, onStep(n) { if (n >= 1 && !made) madeAt = performance.now(); made = n >= 1; }, tick(t, since) {
+      const u = made ? Math.min(1, (performance.now() - madeAt) / 900) : 0;
+      grow = made ? backOut(u) : grow * .9;
+      const bob = Math.sin(t / 700) * .08;
+      saleng.scale.setScalar(Math.max(.001, grow * 2.8)); saleng.position.y = bob; saleng.rotation.y = Math.PI / 4 + Math.sin(t / 2200) * .12;
+      saleng.userData.level = Math.min(1, grow); saleng.userData.tick(t);
+      const flick = .9 + Math.random() * .15;
+      halo.position.set(salengAt.x + .6, 3.6 + bob, salengAt.z - .6); halo.scale.setScalar(Math.max(.001, grow * 7 * flick)); halo.material.opacity = Math.min(1, grow) * .9;
+      spill.intensity = Math.min(1, grow) * 40 * flick;
       const k = since % cycle; const n = Math.floor(k / hop);
       shops.forEach((s, i) => {
         const lit = k < cycle - 700 && (i < n || (i === n && (k % hop) > hop * .9));
